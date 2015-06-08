@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Remote Control Cooler</string>
+
+    <string name="title_section1">Drive</string>
+    <string name="title_section2">Control Music</string>
+    <string name="title_section3">Monitor</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="cruise_mode">Cruise Mode</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
