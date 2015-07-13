@@ -1,6 +1,9 @@
 package com.android.remotecontrolcooler;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -18,6 +21,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class DriveActivity extends ActionBarActivity
@@ -32,12 +36,18 @@ public class DriveActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    private BluetoothAdapter mBluetoothAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drive);
-
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        // If the adapter is null, then Bluetooth is not supported
+        if (mBluetoothAdapter == null) {
+            Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
+            finish();
+        }
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -56,7 +66,23 @@ public class DriveActivity extends ActionBarActivity
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
     }
-
+    // Intent request codes
+    private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
+    private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
+    private static final int REQUEST_ENABLE_BT = 3;
+    @Override
+    public void onStart() {
+        super.onStart();
+        // If BT is not on, request that it be enabled.
+        // setupChat() will then be called during onActivityResult
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+            // Otherwise, setup the chat session
+        } //else if (mChatService == null) {
+//            setupChat();
+//        }
+    }
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
