@@ -1,6 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".DriveActivity">
+    <item android:id="@+id/action_example" android:title="@string/cruise_mode"
+        app:showAsAction="withText|ifRoom" />
     <item
         android:id="@+id/secure_connect_scan"
         android:icon="@drawable/ic_action_device_access_bluetooth_searching"
