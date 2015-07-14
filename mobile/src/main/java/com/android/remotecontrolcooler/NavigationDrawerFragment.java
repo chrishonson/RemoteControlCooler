@@ -1,5 +1,7 @@
 package com.android.remotecontrolcooler;
 
+import android.bluetooth.BluetoothAdapter;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -28,6 +30,10 @@ import android.widget.Toast;
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
 public class NavigationDrawerFragment extends Fragment {
+    // Intent request codes
+    private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
+    private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
+    private static final int REQUEST_ENABLE_BT = 3;
 
     /**
      * Remember the position of the selected item.
@@ -247,9 +253,24 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
-            return true;
+        switch (item.getItemId()) {
+            case R.id.secure_connect_scan: {
+                // Launch the DeviceListActivity to see devices and do scan
+                Intent serverIntent = new Intent(getActivity(), DeviceListActivity.class);
+                startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
+                return true;
+            }
+            case R.id.insecure_connect_scan: {
+                // Launch the DeviceListActivity to see devices and do scan
+                Intent serverIntent = new Intent(getActivity(), DeviceListActivity.class);
+                startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_INSECURE);
+                return true;
+            }
+            case R.id.discoverable: {
+                // Ensure this device is discoverable by others
+                ((DriveActivity)getActivity()).ensureDiscoverable();
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
