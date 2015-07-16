@@ -7,9 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class TwinThumbControlFragment extends Fragment {
     /**
      * The fragment argument representing the section number for this
