@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
+
+import com.android.remotecontrolcooler.widget.VerticalSeekBar;
 
 public class TwinThumbControlFragment extends Fragment {
     /**
@@ -32,8 +36,25 @@ public class TwinThumbControlFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//            Seekbar seekbar = (SeekBar)  .id.seekBar1
+
+
         View rootView = inflater.inflate(R.layout.fragment_drive, container, false);
+        VerticalSeekBar seekbar = (VerticalSeekBar)rootView.findViewById(R.id.seekBar1);
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                ((CoolerActivity)getActivity()).sendMessage(
+                        "Left " + Integer.toString(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
         return rootView;
     }
 
