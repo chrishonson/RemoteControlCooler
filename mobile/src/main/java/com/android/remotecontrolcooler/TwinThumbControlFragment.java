@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
@@ -46,11 +45,25 @@ public class TwinThumbControlFragment extends Fragment {
                 ((CoolerActivity)getActivity()).sendMessage(
                         "Left " + Integer.toString(progress));
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
 
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+        VerticalSeekBar seekbar2 = (VerticalSeekBar) rootView.findViewById(R.id.seekBar2);
+        seekbar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                ((CoolerActivity) getActivity()).sendMessage(
+                        "Right " + Integer.toString(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }

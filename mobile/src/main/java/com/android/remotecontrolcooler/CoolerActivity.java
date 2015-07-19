@@ -3,26 +3,19 @@ package com.android.remotecontrolcooler;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.SyncStateContract;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.widget.DrawerLayout;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.remotecontrolcooler.common.logger.Log;
-import com.android.remotecontrolcooler.common.logger.LogFragment;
 import com.android.remotecontrolcooler.common.logger.LogWrapper;
 import com.android.remotecontrolcooler.common.logger.MessageOnlyLogFilter;
 
@@ -74,14 +67,25 @@ public class CoolerActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, TwinThumbControlFragment.newInstance(position + 1))
-                .commit();
+        switch (position) {
+            case 0:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, TwinThumbControlFragment.newInstance(position + 1))
+                        .commit();
+                break;
+            case 1:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, ControlMusicFragment.newInstance(position + 1))
+                        .commit();
+
+        }
     }
+
     // Intent request codes
     private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
     private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
     private static final int REQUEST_ENABLE_BT = 3;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -95,6 +99,7 @@ public class CoolerActivity extends ActionBarActivity
             setupChat();
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -118,6 +123,7 @@ public class CoolerActivity extends ActionBarActivity
             }
         }
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_CONNECT_DEVICE_SECURE:
@@ -146,6 +152,7 @@ public class CoolerActivity extends ActionBarActivity
                 }
         }
     }
+
     /**
      * Establish connection with other divice
      *
@@ -174,6 +181,7 @@ public class CoolerActivity extends ActionBarActivity
         // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
     }
+
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -227,6 +235,7 @@ public class CoolerActivity extends ActionBarActivity
         }
         return super.onOptionsItemSelected(item);
     }
+
     /**
      * Makes this device discoverable.
      */
@@ -238,6 +247,7 @@ public class CoolerActivity extends ActionBarActivity
             startActivity(discoverableIntent);
         }
     }
+
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
@@ -275,9 +285,9 @@ public class CoolerActivity extends ActionBarActivity
         }
     }
 
-        /**
-         * The Handler that gets information back from the BluetoothChatService
-         */
+    /**
+     * The Handler that gets information back from the BluetoothChatService
+     */
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -328,6 +338,7 @@ public class CoolerActivity extends ActionBarActivity
             }
         }
     };
+
     /**
      * Updates the status on the action bar.
      *
@@ -340,6 +351,7 @@ public class CoolerActivity extends ActionBarActivity
         }
         actionBar.setSubtitle(resId);
     }
+
     /**
      * Updates the status on the action bar.
      *
@@ -352,7 +364,10 @@ public class CoolerActivity extends ActionBarActivity
         }
         actionBar.setSubtitle(subTitle);
     }
-    /** Create a chain of targets that will receive log data */
+
+    /**
+     * Create a chain of targets that will receive log data
+     */
 //    @Override
     public void initializeLogging() {
         // Wraps Android's native log framework.

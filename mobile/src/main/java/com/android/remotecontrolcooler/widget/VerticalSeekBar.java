@@ -2,6 +2,7 @@ package com.android.remotecontrolcooler.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -32,6 +33,8 @@ public class VerticalSeekBar extends SeekBar {
     }
 
     protected void onDraw(Canvas c) {
+//        setSplitTrack(true);
+        setProgressDrawable(new ColorDrawable(android.R.color.transparent));
         c.rotate(-90);
         c.translate(-getHeight(), 0);
 
@@ -46,8 +49,7 @@ public class VerticalSeekBar extends SeekBar {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
-                setProgress(50);
-//                setThumbOffset(50);
+                setProgress(127);
                 break;
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
