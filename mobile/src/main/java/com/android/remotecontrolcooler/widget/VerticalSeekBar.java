@@ -1,11 +1,11 @@
 package com.android.remotecontrolcooler.widget;
 
-        import android.content.Context;
-        import android.graphics.Canvas;
-        import android.util.AttributeSet;
-        import android.util.Log;
-        import android.view.MotionEvent;
-        import android.widget.SeekBar;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.widget.SeekBar;
 
 public class VerticalSeekBar extends SeekBar {
 
@@ -33,7 +33,7 @@ public class VerticalSeekBar extends SeekBar {
 
     protected void onDraw(Canvas c) {
         c.rotate(-90);
-        c.translate(-getHeight(),0);
+        c.translate(-getHeight(), 0);
 
         super.onDraw(c);
     }
@@ -45,20 +45,29 @@ public class VerticalSeekBar extends SeekBar {
         }
 
         switch (event.getAction()) {
+            case MotionEvent.ACTION_UP:
+                setProgress(50);
+//                setThumbOffset(50);
+                break;
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
-            case MotionEvent.ACTION_UP:
-                int i=0;
-                i=getMax() - (int) (getMax() * event.getY() / getHeight());
+                int i = 0;
+                i = getMax() - (int) (getMax() * event.getY() / getHeight());
                 setProgress(i);
-                Log.i("Progress",getProgress()+"");
-                onSizeChanged(getWidth(), getHeight(), 0, 0);
+                Log.i("Progress", getProgress() + "");
+//                onSizeChanged(getWidth(), getHeight(), 0, 0);
                 break;
 
             case MotionEvent.ACTION_CANCEL:
                 break;
         }
         return true;
+    }
+
+    @Override
+    public synchronized void setProgress(int progress) {
+        super.setProgress(progress);
+        onSizeChanged(getWidth(), getHeight(), 0, 0);
     }
 
 }

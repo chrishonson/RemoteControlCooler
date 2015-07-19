@@ -51,8 +51,8 @@ public class CoolerActivity extends ActionBarActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        initializeLogging();
         super.onCreate(savedInstanceState);
+        initializeLogging();
         setContentView(R.layout.activity_cooler);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         // If the adapter is null, then Bluetooth is not supported
@@ -274,28 +274,31 @@ public class CoolerActivity extends ActionBarActivity
             mOutStringBuffer.setLength(0);
         }
     }
-    /**
-     * The Handler that gets information back from the BluetoothChatService
-     */
+
+        /**
+         * The Handler that gets information back from the BluetoothChatService
+         */
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
 //            Activity activity = getActivity();
+
             switch (msg.what) {
                 case Constants.MESSAGE_STATE_CHANGE:
-//                    switch (msg.arg1) {
-//                        case BluetoothChatService.STATE_CONNECTED:
-//                            setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
+                    switch (msg.arg1) {
+                        case BluetoothChatService.STATE_CONNECTED:
+                            setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
+                            final android.app.ActionBar actionBar = getActionBar();
 //                            mConversationArrayAdapter.clear();
-//                            break;
-//                        case BluetoothChatService.STATE_CONNECTING:
-//                            setStatus(R.string.title_connecting);
-//                            break;
-//                        case BluetoothChatService.STATE_LISTEN:
-//                        case BluetoothChatService.STATE_NONE:
-//                            setStatus(R.string.title_not_connected);
-//                            break;
-//                    }
+                            break;
+                        case BluetoothChatService.STATE_CONNECTING:
+                            setStatus(R.string.title_connecting);
+                            break;
+                        case BluetoothChatService.STATE_LISTEN:
+                        case BluetoothChatService.STATE_NONE:
+                            setStatus(R.string.title_not_connected);
+                            break;
+                    }
                     break;
                 case Constants.MESSAGE_WRITE:
                     byte[] writeBuf = (byte[]) msg.obj;
@@ -325,6 +328,30 @@ public class CoolerActivity extends ActionBarActivity
             }
         }
     };
+    /**
+     * Updates the status on the action bar.
+     *
+     * @param resId a string resource ID
+     */
+    private void setStatus(int resId) {
+        final ActionBar actionBar = getSupportActionBar();
+        if (null == actionBar) {
+            return;
+        }
+        actionBar.setSubtitle(resId);
+    }
+    /**
+     * Updates the status on the action bar.
+     *
+     * @param subTitle status
+     */
+    private void setStatus(CharSequence subTitle) {
+        final ActionBar actionBar = getSupportActionBar();
+        if (null == actionBar) {
+            return;
+        }
+        actionBar.setSubtitle(subTitle);
+    }
     /** Create a chain of targets that will receive log data */
 //    @Override
     public void initializeLogging() {
