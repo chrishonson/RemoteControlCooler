@@ -42,8 +42,11 @@ public class TwinThumbControlFragment extends Fragment {
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                MagnitudeAndDirection magnitudeAndDirection = new MagnitudeAndDirection(progress).invoke();
+                String direction = magnitudeAndDirection.getDirection();
+                int magnitude = magnitudeAndDirection.getMagnitude();
                 ((CoolerActivity)getActivity()).sendMessage(
-                        "Left " + Integer.toString(progress));
+                        "Left " + direction + Integer.toString(magnitude));
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -57,8 +60,11 @@ public class TwinThumbControlFragment extends Fragment {
         seekbar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                MagnitudeAndDirection magnitudeAndDirection = new MagnitudeAndDirection(progress).invoke();
+                String direction = magnitudeAndDirection.getDirection();
+                int magnitude = magnitudeAndDirection.getMagnitude();
                 ((CoolerActivity) getActivity()).sendMessage(
-                        "Right " + Integer.toString(progress));
+                        "Right " + direction + Integer.toString(magnitude));
             }
 
             @Override
@@ -76,5 +82,41 @@ public class TwinThumbControlFragment extends Fragment {
         super.onAttach(activity);
         ((CoolerActivity) activity).onSectionAttached(
                 getArguments().getInt(ARG_SECTION_NUMBER));
+    }
+
+    private class MagnitudeAndDirection {
+        private int progress;
+        private int magnitude;
+        private String direction;
+
+        public MagnitudeAndDirection(int progress) {
+            this.progress = progress;
+        }
+
+        public int getMagnitude() {
+            return magnitude;
+        }
+
+        public String getDirection() {
+            return direction;
+        }
+
+        private final static int ZERO_ACCELERATOR = 256;
+
+        public MagnitudeAndDirection invoke() {
+            magnitude = ZERO_ACCELERATOR;
+            direction = "forward ";
+            if (progress < ZERO_ACCELERATOR - 1) {
+                short b = (short) progress;
+                b -= ZERO_ACCELERATOR;
+                magnitude = Math.abs(b);
+                direction = "reverse ";
+            } else if (progress > ZERO_ACCELERATOR) {
+                magnitude = progress - ZERO_ACCELERATOR;
+            } else {
+                magnitude = 0;
+            }
+            return this;
+        }
     }
 }
