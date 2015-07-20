@@ -19,9 +19,11 @@
         android:scrollbarAlwaysDrawHorizontalTrack="false"
         android:scrollbarAlwaysDrawVerticalTrack="false"
         android:background="@android:color/black"
-        android:progress="127"
-        android:max="255"
-        android:nestedScrollingEnabled="false" />
+        android:progress="255"
+        android:max="512"
+        android:thumb="@drawable/thumb_image"
+        android:minHeight="100dp" />
+
 
     <com.android.remotecontrolcooler.widget.VerticalSeekBar
         android:layout_width="wrap_content"
@@ -33,8 +35,10 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:background="@android:color/black"
-        android:progress="127"
-        android:max="255" />
+        android:progress="255"
+        android:max="512"
+        android:thumb="@drawable/thumb_image"
+        android:minHeight="100dp" />
 
     <TextView
         android:layout_width="wrap_content"
