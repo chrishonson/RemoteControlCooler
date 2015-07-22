@@ -45,6 +45,7 @@ public class BluetoothChatService {
     // Name for the SDP record when creating server socket
     private static final String NAME_SECURE = "BluetoothChatSecure";
     private static final String NAME_INSECURE = "BluetoothChatInsecure";
+    public static final UUID SPP_UUID_SECURE = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
     // Unique UUID for this application
     private static final UUID MY_UUID_SECURE =
@@ -387,7 +388,7 @@ public class BluetoothChatService {
             try {
                 if (secure) {
                     tmp = device.createRfcommSocketToServiceRecord(
-                            MY_UUID_SECURE);
+                            SPP_UUID_SECURE);
                 } else {
                     tmp = device.createInsecureRfcommSocketToServiceRecord(
                             MY_UUID_INSECURE);

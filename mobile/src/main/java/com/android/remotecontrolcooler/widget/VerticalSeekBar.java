@@ -8,18 +8,23 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.SeekBar;
 
-public class VerticalSeekBar extends SeekBar {
+import com.android.remotecontrolcooler.R;
 
+public class VerticalSeekBar extends SeekBar {
+    Context context;
     public VerticalSeekBar(Context context) {
         super(context);
+        this.context = context;
     }
 
     public VerticalSeekBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.context = context;
     }
 
     public VerticalSeekBar(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
     }
 
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -49,7 +54,7 @@ public class VerticalSeekBar extends SeekBar {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
-                setProgress(255);
+                setProgress(context.getResources().getInteger(R.integer.zero_accelerator_position));
                 break;
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:

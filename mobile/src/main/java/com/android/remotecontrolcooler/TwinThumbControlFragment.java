@@ -16,6 +16,11 @@ public class TwinThumbControlFragment extends Fragment {
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String PRELUDE = "7C";
+    private static final String LEFT = "00";
+    private static final String RIGHT = "01";
+    private static final String FORWARD = "00";
+    private static final String REVERSE = "01";
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -42,11 +47,20 @@ public class TwinThumbControlFragment extends Fragment {
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                MagnitudeAndDirection magnitudeAndDirection = new MagnitudeAndDirection(progress).invoke();
+                int zero = getActivity().getResources().getInteger(R.integer.zero_accelerator_position);
+                MagnitudeAndDirection magnitudeAndDirection = new MagnitudeAndDirection(progress, zero).invoke();
                 String direction = magnitudeAndDirection.getDirection();
                 int magnitude = magnitudeAndDirection.getMagnitude();
-                ((CoolerActivity)getActivity()).sendMessage(
-                        "Left " + direction + Integer.toString(magnitude));
+                //this is stupid but 0 well
+                if (magnitude == 0) {
+                    ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
+                            LEFT + direction + "00");
+                } else {
+                    ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
+                            LEFT + direction + Integer.toString(magnitude));
+                }
+//                                ((CoolerActivity)getActivity()).sendMessage(
+//                        "Left " + Integer.toString(progress));
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -60,11 +74,20 @@ public class TwinThumbControlFragment extends Fragment {
         seekbar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                MagnitudeAndDirection magnitudeAndDirection = new MagnitudeAndDirection(progress).invoke();
+                int zero = getActivity().getResources().getInteger(R.integer.zero_accelerator_position);
+                MagnitudeAndDirection magnitudeAndDirection = new MagnitudeAndDirection(progress, zero).invoke();
                 String direction = magnitudeAndDirection.getDirection();
                 int magnitude = magnitudeAndDirection.getMagnitude();
-                ((CoolerActivity) getActivity()).sendMessage(
-                        "Right " + direction + Integer.toString(magnitude));
+                //this is stupid but 0 well
+                if (magnitude == 0) {
+                    ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
+                            RIGHT + direction + "00");
+                } else {
+                    ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
+                            RIGHT + direction + Integer.toString(magnitude));
+                }
+//                ((CoolerActivity)getActivity()).sendMessage(
+//                        "Right " + Integer.toString(progress));
             }
 
             @Override
@@ -86,11 +109,13 @@ public class TwinThumbControlFragment extends Fragment {
 
     private class MagnitudeAndDirection {
         private int progress;
+        private int zero;
         private int magnitude;
         private String direction;
 
-        public MagnitudeAndDirection(int progress) {
+        public MagnitudeAndDirection(int progress, int zero) {
             this.progress = progress;
+            this.zero = zero;
         }
 
         public int getMagnitude() {
@@ -101,18 +126,16 @@ public class TwinThumbControlFragment extends Fragment {
             return direction;
         }
 
-        private final static int ZERO_ACCELERATOR = 256;
-
         public MagnitudeAndDirection invoke() {
-            magnitude = ZERO_ACCELERATOR;
-            direction = "forward ";
-            if (progress < ZERO_ACCELERATOR - 1) {
+            magnitude = zero;
+            direction = FORWARD;
+            if (progress < zero - 1) {
                 short b = (short) progress;
-                b -= ZERO_ACCELERATOR;
+                b -= zero;
                 magnitude = Math.abs(b);
-                direction = "reverse ";
-            } else if (progress > ZERO_ACCELERATOR) {
-                magnitude = progress - ZERO_ACCELERATOR;
+                direction = REVERSE;
+            } else if (progress > zero) {
+                magnitude = progress - zero;
             } else {
                 magnitude = 0;
             }
