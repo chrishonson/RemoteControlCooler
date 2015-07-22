@@ -2,6 +2,7 @@ package com.android.remotecontrolcooler;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,11 @@ public class TwinThumbControlFragment extends Fragment {
     private static final String RIGHT = "01";
     private static final String FORWARD = "00";
     private static final String REVERSE = "01";
-
+    String rightDirection = FORWARD;
+    String leftDirection = FORWARD;
+    int rightMagnitude = 0;
+    int leftMagnitude = 0;
+    private Handler handler = new Handler();
     /**
      * Returns a new instance of this fragment for the given section
      * number.
@@ -63,15 +68,15 @@ public class TwinThumbControlFragment extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int zero = getActivity().getResources().getInteger(R.integer.zero_accelerator_position);
                 MagnitudeAndDirection magnitudeAndDirection = new MagnitudeAndDirection(progress, zero).invoke();
-                String direction = magnitudeAndDirection.getDirection();
-                int magnitude = magnitudeAndDirection.getMagnitude();
+                leftDirection = magnitudeAndDirection.getDirection();
+                leftMagnitude = magnitudeAndDirection.getMagnitude();
                 //this is stupid but 0 well
-                if (magnitude == 0) {
+                if (leftMagnitude == 0) {
                     ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
-                            LEFT + direction + "00");
+                            LEFT + leftDirection + "00");
                 } else {
                     ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
-                            LEFT + direction + getHexString(magnitude));
+                            LEFT + leftDirection + getHexString(leftMagnitude));
                 }
 //                                ((CoolerActivity)getActivity()).sendMessage(
 //                        "Left " + Integer.toString(progress));
@@ -91,17 +96,16 @@ public class TwinThumbControlFragment extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int zero = getActivity().getResources().getInteger(R.integer.zero_accelerator_position);
                 MagnitudeAndDirection magnitudeAndDirection = new MagnitudeAndDirection(progress, zero).invoke();
-                String direction = magnitudeAndDirection.getDirection();
-                int magnitude = magnitudeAndDirection.getMagnitude();
+                rightDirection = magnitudeAndDirection.getDirection();
+                rightMagnitude = magnitudeAndDirection.getMagnitude();
                 //this is stupid but 0 well
-                if (magnitude == 0) {
+                if (rightMagnitude == 0) {
                     ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
-                            RIGHT + direction + "00");
+                            RIGHT + rightDirection + "00");
                 } else {
                     ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
-                            RIGHT + direction + Integer.toString(magnitude));
+                            RIGHT + rightDirection + getHexString(rightMagnitude));
 
-//                            RIGHT + direction + getHexString(magnitude));
                 }
 //                ((CoolerActivity)getActivity()).sendMessage(
 //                        "Right " + Integer.toString(progress));
@@ -123,8 +127,34 @@ public class TwinThumbControlFragment extends Fragment {
         super.onAttach(activity);
         ((CoolerActivity) activity).onSectionAttached(
                 getArguments().getInt(ARG_SECTION_NUMBER));
+        handler.postDelayed(runnable, 100);
+
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        handler.postDelayed(runnable, 100);
+    }
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (getActivity() != null) {
+                ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
+                        LEFT + leftDirection + getHexString(leftMagnitude));
+                ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
+                        RIGHT + rightDirection + getHexString(rightMagnitude));
+            }
+            handler.postDelayed(this, 100);
+        }
+    };
     private class MagnitudeAndDirection {
         private int progress;
         private int zero;

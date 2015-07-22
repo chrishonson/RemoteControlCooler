@@ -269,11 +269,11 @@ public class CoolerActivity extends ActionBarActivity
      */
     public void sendMessage(String message) {
         // Check that we're actually connected before trying anything
-        if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
-            Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
+//        if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+//            Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+        Log.d(TAG, message);
         // Check that there's actually something to send
         if (message.length() > 0) {
             // Get the message bytes and tell the BluetoothChatService to write
