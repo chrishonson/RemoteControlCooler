@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 
+import com.android.remotecontrolcooler.common.logger.Log;
 import com.android.remotecontrolcooler.widget.VerticalSeekBar;
 
 public class TwinThumbControlFragment extends Fragment {
@@ -37,13 +38,26 @@ public class TwinThumbControlFragment extends Fragment {
     public TwinThumbControlFragment() {
     }
 
+    private String getHexString(int magnitude) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(Integer.toHexString(magnitude));
+        if (sb.length() < 2)
+
+        {
+            sb.insert(0, '0'); // pad with leading zero if needed
+        }
+
+        String hex = sb.toString();
+        return hex;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 
         View rootView = inflater.inflate(R.layout.fragment_drive, container, false);
-        VerticalSeekBar seekbar = (VerticalSeekBar)rootView.findViewById(R.id.seekBar1);
+        VerticalSeekBar seekbar = (VerticalSeekBar) rootView.findViewById(R.id.seekBar1);
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -57,11 +71,12 @@ public class TwinThumbControlFragment extends Fragment {
                             LEFT + direction + "00");
                 } else {
                     ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
-                            LEFT + direction + Integer.toString(magnitude));
+                            LEFT + direction + getHexString(magnitude));
                 }
 //                                ((CoolerActivity)getActivity()).sendMessage(
 //                        "Left " + Integer.toString(progress));
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
@@ -85,6 +100,8 @@ public class TwinThumbControlFragment extends Fragment {
                 } else {
                     ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
                             RIGHT + direction + Integer.toString(magnitude));
+
+//                            RIGHT + direction + getHexString(magnitude));
                 }
 //                ((CoolerActivity)getActivity()).sendMessage(
 //                        "Right " + Integer.toString(progress));
@@ -93,6 +110,7 @@ public class TwinThumbControlFragment extends Fragment {
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
@@ -129,16 +147,17 @@ public class TwinThumbControlFragment extends Fragment {
         public MagnitudeAndDirection invoke() {
             magnitude = zero;
             direction = FORWARD;
-            if (progress < zero - 1) {
+            if (progress < zero) {
                 short b = (short) progress;
-                b -= zero;
+                b -= (zero - 1);
                 magnitude = Math.abs(b);
                 direction = REVERSE;
             } else if (progress > zero) {
-                magnitude = progress - zero;
+                magnitude = progress - (zero + 1);
             } else {
                 magnitude = 0;
             }
+            Log.d("debug", Integer.toString(magnitude));
             return this;
         }
     }
