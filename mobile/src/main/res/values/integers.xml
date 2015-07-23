@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="zero_accelerator_position">256</integer>
+    <integer name="max_forward_accelerator_position">512</integer>
+    <integer name="max_reverse_accelerator_position">0</integer>
+</resources>
