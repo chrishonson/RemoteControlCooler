@@ -77,7 +77,12 @@ public class CoolerActivity extends ActionBarActivity
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, ControlMusicFragment.newInstance(position + 1))
                         .commit();
-
+                break;
+            case 2:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, AccessoriesFragment.newInstance(position + 1))
+                        .commit();
+                break;
         }
     }
 

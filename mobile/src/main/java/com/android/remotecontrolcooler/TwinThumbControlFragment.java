@@ -18,11 +18,14 @@ public class TwinThumbControlFragment extends Fragment {
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String PRELUDE = "7C";
+    private static final String PRELUDE = "7C0000";
     private static final String LEFT = "00";
     private static final String RIGHT = "01";
     private static final String FORWARD = "00";
     private static final String REVERSE = "01";
+    private static final String NUMBYTES = "0006";
+    private static final String CARRAGERETURN = "0A";
+    private static final String LINEFEED = "0A";
     String rightDirection = FORWARD;
     String leftDirection = FORWARD;
     int rightMagnitude = 0;
@@ -70,14 +73,9 @@ public class TwinThumbControlFragment extends Fragment {
                 MagnitudeAndDirection magnitudeAndDirection = new MagnitudeAndDirection(progress, zero).invoke();
                 leftDirection = magnitudeAndDirection.getDirection();
                 leftMagnitude = magnitudeAndDirection.getMagnitude();
-                //this is stupid but 0 well
-                if (leftMagnitude == 0) {
-                    ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
-                            LEFT + leftDirection + "00");
-                } else {
-                    ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
-                            LEFT + leftDirection + getHexString(leftMagnitude));
-                }
+                combineAndSend();
+
+
 //                                ((CoolerActivity)getActivity()).sendMessage(
 //                        "Left " + Integer.toString(progress));
             }
@@ -98,15 +96,17 @@ public class TwinThumbControlFragment extends Fragment {
                 MagnitudeAndDirection magnitudeAndDirection = new MagnitudeAndDirection(progress, zero).invoke();
                 rightDirection = magnitudeAndDirection.getDirection();
                 rightMagnitude = magnitudeAndDirection.getMagnitude();
-                //this is stupid but 0 well
-                if (rightMagnitude == 0) {
-                    ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
-                            RIGHT + rightDirection + "00");
-                } else {
-                    ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
-                            RIGHT + rightDirection + getHexString(rightMagnitude));
+                combineAndSend();
 
-                }
+                //this is stupid but 0 well
+//                if (rightMagnitude == 0) {
+//                    ((CoolerActivity) getActivity()).sendMessage(PRELUDE + NUMBYTES +
+//                            RIGHT + rightDirection + "00");
+//                } else {
+//                    ((CoolerActivity) getActivity()).sendMessage(PRELUDE + NUMBYTES +
+//                            RIGHT + rightDirection + getHexString(rightMagnitude));
+//
+//                }
 //                ((CoolerActivity)getActivity()).sendMessage(
 //                        "Right " + Integer.toString(progress));
             }
@@ -120,6 +120,19 @@ public class TwinThumbControlFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    private void combineAndSend() {
+        //this is stupid but 0 well
+//        if (leftMagnitude == 0) {
+//            ((CoolerActivity) getActivity()).sendMessage(PRELUDE + NUMBYTES +
+//                    leftDirection + rightDirection + "00");
+//        } else {
+//        Log.d(TAG, "")
+            ((CoolerActivity) getActivity()).sendMessage(PRELUDE + NUMBYTES +
+                    leftDirection + rightDirection + getHexString(leftMagnitude) +
+                    getHexString(rightMagnitude) + "/r/n");
+//        }
     }
 
     @Override
@@ -147,10 +160,7 @@ public class TwinThumbControlFragment extends Fragment {
         @Override
         public void run() {
             if (getActivity() != null) {
-                ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
-                        LEFT + leftDirection + getHexString(leftMagnitude));
-                ((CoolerActivity) getActivity()).sendMessage(PRELUDE +
-                        RIGHT + rightDirection + getHexString(rightMagnitude));
+                combineAndSend();
             }
             handler.postDelayed(this, 100);
         }

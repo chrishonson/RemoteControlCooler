@@ -6,26 +6,21 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
-
-import java.util.ArrayList;
 
 /**
  * Created by nickc on 7/18/15.
  */
 
-public class ControlMusicFragment extends Fragment {
+public class AccessoriesFragment extends Fragment {
     /**
      * The fragment argument representing the section number for this
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private ArrayList songArray;
-    ListView listSongs;
-    public static ControlMusicFragment newInstance(int sectionNumber) {
-        ControlMusicFragment fragment = new ControlMusicFragment();
+
+    public static AccessoriesFragment newInstance(int sectionNumber) {
+        AccessoriesFragment fragment = new AccessoriesFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -58,43 +53,6 @@ public class ControlMusicFragment extends Fragment {
                 ((CoolerActivity) getActivity()).sendMessage("Skip");
             }
         });
-
-        Song song = new Song(R.mipmap.icon, "crappy song", "Justin Bieber", "some album");
-        songArray = new ArrayList();
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-        songArray.add(song);
-
-        // Get the ListView by Id and instantiate the adapter with
-        // cars data and then set it the ListView
-        listSongs = (ListView) rootView.findViewById(R.id.list_songs);
-        MusicListAdapter adapter = new MusicListAdapter(getActivity(), songArray);
-        listSongs.setAdapter(adapter);
-        // Set the onItemClickListener on the ListView to listen for items clicks
-        listSongs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Song selectedSong = (Song) songArray.get(position);
-//                ((CoolerActivity)getActivity()).sendMessage(selectedSong.getTitle());
-                ((CoolerActivity)getActivity()).sendMessage("B" + "/r/n");
-            }
-        });
-
         return rootView;
     }
 

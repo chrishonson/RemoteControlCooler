@@ -391,7 +391,7 @@ public class BluetoothChatService {
                             SPP_UUID_SECURE);
                 } else {
                     tmp = device.createInsecureRfcommSocketToServiceRecord(
-                            MY_UUID_INSECURE);
+                            SPP_UUID_SECURE);
                 }
             } catch (IOException e) {
                 Log.e(TAG, "Socket Type: " + mSocketType + "create() failed", e);
