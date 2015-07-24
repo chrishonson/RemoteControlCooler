@@ -4,10 +4,18 @@
     android:layout_height="match_parent"
     tools:context="com.android.remotecontrolcooler.ControlMusicFragment"
     android:orientation="vertical">
-    <ListView
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_songs" />
+        android:layout_height="match_parent"
+        android:layout_weight=".1">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_songs" />
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -16,24 +24,25 @@
         android:layout_below="@id/list_songs">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Vol -"
-            android:id="@+id/rewind_button" />
+            android:id="@+id/rewind_button"
+            android:layout_weight="1" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Play"
             android:id="@+id/play_button"
-            />
+            android:layout_weight="1" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Vol +"
             android:id="@+id/skip_button"
-             />
+            android:layout_weight="1" />
     </LinearLayout>
 
 </LinearLayout>

@@ -26,7 +26,6 @@ public class TwinThumbControlFragment extends Fragment {
     private static final String NUMBYTES = "00060000";
     private static final String CARRAGERETURN = "0A";
     private static final String LINEFEED = "0A";
-    public static final int DELAY_MILLIS = 500;
     String rightDirection = FORWARD;
     String leftDirection = FORWARD;
     int rightMagnitude = 0;
@@ -126,7 +125,7 @@ public class TwinThumbControlFragment extends Fragment {
         super.onAttach(activity);
         ((CoolerActivity) activity).onSectionAttached(
                 getArguments().getInt(ARG_SECTION_NUMBER));
-        handler.postDelayed(runnable, DELAY_MILLIS);
+        handler.postDelayed(runnable, ((CoolerActivity) getActivity()).getUpdateRate());
 
     }
 
@@ -139,7 +138,7 @@ public class TwinThumbControlFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        handler.postDelayed(runnable, DELAY_MILLIS);
+        handler.postDelayed(runnable, ((CoolerActivity) getActivity()).getUpdateRate());
     }
 
     private Runnable runnable = new Runnable() {
@@ -147,8 +146,8 @@ public class TwinThumbControlFragment extends Fragment {
         public void run() {
             if (getActivity() != null) {
                 combineAndSend();
+                handler.postDelayed(this, ((CoolerActivity) getActivity()).getUpdateRate());
             }
-            handler.postDelayed(this, 100);
         }
     };
     private class MagnitudeAndDirection {

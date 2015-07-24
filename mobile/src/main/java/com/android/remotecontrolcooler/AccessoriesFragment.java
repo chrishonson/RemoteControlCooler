@@ -6,7 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.Toast;
 
 /**
  * Created by nickc on 7/18/15.
@@ -31,28 +32,26 @@ public class AccessoriesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_control_music, container, false);
-        Button rewindButtonk = (Button) rootView.findViewById(R.id.rewind_button);
-        Button playButton = (Button) rootView.findViewById(R.id.play_button);
-        Button skipButton = (Button) rootView.findViewById(R.id.skip_button);
-        rewindButtonk.setOnClickListener(new View.OnClickListener() {
+        View rootView = inflater.inflate(R.layout.fragment_accessories, container, false);
+        SeekBar seekBar = (SeekBar)rootView.findViewById(R.id.updateRateSeekbar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 0;
+
             @Override
-            public void onClick(View v) {
-                ((CoolerActivity) getActivity()).sendMessage("Rewind");
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                progress = progresValue;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                ((CoolerActivity)getActivity()).setUpdateRate(progress);
             }
         });
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((CoolerActivity) getActivity()).sendMessage("Play");
-            }
-        });
-        skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((CoolerActivity) getActivity()).sendMessage("Skip");
-            }
-        });
+
         return rootView;
     }
 

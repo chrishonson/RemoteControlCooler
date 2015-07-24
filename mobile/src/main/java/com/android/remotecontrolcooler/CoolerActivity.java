@@ -44,6 +44,8 @@ public class CoolerActivity extends ActionBarActivity
     private CharSequence mTitle;
 
     private BluetoothAdapter mBluetoothAdapter = null;
+    public static final int DELAY_MILLIS = 2000;
+    private long updateRate = DELAY_MILLIS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -408,5 +410,13 @@ public class CoolerActivity extends ActionBarActivity
 //        msgFilter.setNext(logFragment.getLogView());
 
         Log.i(TAG, "Ready");
+    }
+
+    public long getUpdateRate() {
+        return updateRate;
+    }
+
+    public void setUpdateRate(long updateRate) {
+        this.updateRate = updateRate;
     }
 }
