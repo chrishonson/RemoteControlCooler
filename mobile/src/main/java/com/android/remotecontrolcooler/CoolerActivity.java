@@ -19,6 +19,9 @@ import com.android.remotecontrolcooler.common.logger.Log;
 import com.android.remotecontrolcooler.common.logger.LogWrapper;
 import com.android.remotecontrolcooler.common.logger.MessageOnlyLogFilter;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 
 public class CoolerActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -282,7 +285,22 @@ public class CoolerActivity extends ActionBarActivity
         // Check that there's actually something to send
         if (message.length() > 0) {
             // Get the message bytes and tell the BluetoothChatService to write
-            byte[] send = message.getBytes();
+            Byte carragereturn = 0x0d;
+            Byte linefeed = 0x0a;
+//            byte[] send = new byte[message.getBytes().length + 2];
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
+            try {
+                outputStream.write( message.getBytes() );
+                outputStream.write( carragereturn );
+                outputStream.write( linefeed );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            byte send[] = outputStream.toByteArray( );
+//            System.arraycopy(carragereturn, 0, c, 0, carragereturn.);
+//                    message.getBytes();
+//            send.
             mChatService.write(send);
 
             // Reset out string buffer to zero and clear the edit text field
