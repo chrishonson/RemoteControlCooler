@@ -18,14 +18,15 @@ public class TwinThumbControlFragment extends Fragment {
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String PRELUDE = "7C0000";
+    private static final String PRELUDE = "7C";
     private static final String LEFT = "00";
     private static final String RIGHT = "01";
-    private static final String FORWARD = "00";
-    private static final String REVERSE = "01";
-    private static final String NUMBYTES = "0006";
+    private static final String FORWARD = "01";
+    private static final String REVERSE = "00";
+    private static final String NUMBYTES = "00060000";
     private static final String CARRAGERETURN = "0A";
     private static final String LINEFEED = "0A";
+    public static final int DELAY_MILLIS = 500;
     String rightDirection = FORWARD;
     String leftDirection = FORWARD;
     int rightMagnitude = 0;
@@ -73,11 +74,7 @@ public class TwinThumbControlFragment extends Fragment {
                 MagnitudeAndDirection magnitudeAndDirection = new MagnitudeAndDirection(progress, zero).invoke();
                 leftDirection = magnitudeAndDirection.getDirection();
                 leftMagnitude = magnitudeAndDirection.getMagnitude();
-                combineAndSend();
-
-
-//                                ((CoolerActivity)getActivity()).sendMessage(
-//                        "Left " + Integer.toString(progress));
+//                combineAndSend();
             }
 
             @Override
@@ -96,19 +93,8 @@ public class TwinThumbControlFragment extends Fragment {
                 MagnitudeAndDirection magnitudeAndDirection = new MagnitudeAndDirection(progress, zero).invoke();
                 rightDirection = magnitudeAndDirection.getDirection();
                 rightMagnitude = magnitudeAndDirection.getMagnitude();
-                combineAndSend();
+//                combineAndSend();
 
-                //this is stupid but 0 well
-//                if (rightMagnitude == 0) {
-//                    ((CoolerActivity) getActivity()).sendMessage(PRELUDE + NUMBYTES +
-//                            RIGHT + rightDirection + "00");
-//                } else {
-//                    ((CoolerActivity) getActivity()).sendMessage(PRELUDE + NUMBYTES +
-//                            RIGHT + rightDirection + getHexString(rightMagnitude));
-//
-//                }
-//                ((CoolerActivity)getActivity()).sendMessage(
-//                        "Right " + Integer.toString(progress));
             }
 
             @Override
@@ -131,7 +117,7 @@ public class TwinThumbControlFragment extends Fragment {
 //        Log.d(TAG, "")
             ((CoolerActivity) getActivity()).sendMessage(PRELUDE + NUMBYTES +
                     leftDirection + rightDirection + getHexString(leftMagnitude) +
-                    getHexString(rightMagnitude) + "/r/n");
+                    getHexString(rightMagnitude));
 //        }
     }
 
@@ -140,7 +126,7 @@ public class TwinThumbControlFragment extends Fragment {
         super.onAttach(activity);
         ((CoolerActivity) activity).onSectionAttached(
                 getArguments().getInt(ARG_SECTION_NUMBER));
-        handler.postDelayed(runnable, 100);
+        handler.postDelayed(runnable, DELAY_MILLIS);
 
     }
 
@@ -153,7 +139,7 @@ public class TwinThumbControlFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        handler.postDelayed(runnable, 100);
+        handler.postDelayed(runnable, DELAY_MILLIS);
     }
 
     private Runnable runnable = new Runnable() {
