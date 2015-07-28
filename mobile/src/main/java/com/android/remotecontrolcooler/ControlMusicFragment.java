@@ -59,25 +59,70 @@ public class ControlMusicFragment extends Fragment {
             }
         });
 
-        Song song = new Song(R.mipmap.icon, "crappy song", "Justin Bieber", "some album");
         songArray = new ArrayList();
+        Song song = new Song(R.drawable.milky_chance, "Becoming", "Milky Chance", "unknown album");
         songArray.add(song);
+        song = new Song(R.drawable.milky_chance, "Down by the river", "Milky Chance", "unknown album");
         songArray.add(song);
+        song = new Song(R.drawable.milky_chance, "Fairytale", "Milky Chance", "unknown album");
         songArray.add(song);
+        song = new Song(R.drawable.milky_chance, "Feathery", "Milky Chance", "unknown album");
         songArray.add(song);
+        song = new Song(R.drawable.milky_chance, "Flashed Junk Mind", "Milky Chance", "unknown album");
         songArray.add(song);
+        song = new Song(R.drawable.milky_chance, "Indigo", "Milky Chance", "unknown album");
         songArray.add(song);
+        song = new Song(R.drawable.milky_chance, "Loveland", "Milky Chance", "unknown album");
+//        songArray.add(song);
+//        song = new Song(R.drawable.milky_chance, "Running", "Milky Chance", "unknown album");
+//        songArray.add(song);
+//        song = new Song(R.drawable.milky_chance, "Sadnecessary", "Milky Chance", "unknown album");
+//        songArray.add(song);
+//        song = new Song(R.drawable.milky_chance, "Stolen dance", "Milky Chance", "unknown album");
+//        songArray.add(song);
+//        song = new Song(R.drawable.milky_chance, "Stunner", "Milky Chance", "unknown album");
+//        songArray.add(song);
+//        song = new Song(R.drawable.milky_chance, "Sweet sun", "Milky Chance", "unknown album");
         songArray.add(song);
+        song = new Song(R.mipmap.icon, "Blackbird", "Other", "unknown album");
         songArray.add(song);
+        song = new Song(R.drawable.queen, "A Kind Of Magic", "Queen", "Greatest Hits");
         songArray.add(song);
+        song = new Song(R.drawable.queen, "Another One Bites The Dust", "Queen", "Greatest Hits");
         songArray.add(song);
+        song = new Song(R.drawable.queen, "Bicycle Race", "Queen", "Greatest Hits");
         songArray.add(song);
+        song = new Song(R.drawable.queen, "Bohemian Rhapsody", "Queen", "Greatest Hits");
         songArray.add(song);
+        song = new Song(R.drawable.queen, "Breakthru", "Queen", "Greatest Hits");
         songArray.add(song);
+        song = new Song(R.drawable.queen, "Crazy Little Thing Called Love", "Queen", "Greatest Hits");
         songArray.add(song);
+        song = new Song(R.drawable.queen, "Don't Stop Me Now", "Queen", "Greatest Hits");
         songArray.add(song);
+        song = new Song(R.drawable.queen, "Fat Bottomed Girls", "Queen", "Greatest Hits");
         songArray.add(song);
+        song = new Song(R.drawable.queen, "Flash", "Queen", "Greatest Hits");
         songArray.add(song);
+        song = new Song(R.drawable.queen, "Friends Will Be Friends", "Queen", "Greatest Hits");
+        songArray.add(song);
+        song = new Song(R.drawable.queen, "Good Old Fashioned Lover Boy", "Queen", "Greatest Hits");
+        songArray.add(song);
+        song = new Song(R.drawable.queen, "Hammer To Fall", "Queen", "Greatest Hits");
+        songArray.add(song);
+        song = new Song(R.drawable.queen, "Headlong", "Queen", "Greatest Hits");
+        songArray.add(song);
+        song = new Song(R.drawable.queen, "I Want It All", "Queen", "Greatest Hits");
+        songArray.add(song);
+        song = new Song(R.drawable.queen, "I Want To Break Free", "Queen", "Greatest Hits");
+        songArray.add(song);
+        song = new Song(R.drawable.queen, "I'm Going Slightly Mad", "Queen", "Greatest Hits");
+        songArray.add(song);
+        song = new Song(R.drawable.queen, "Innuendo", "Queen", "Greatest Hits");
+        songArray.add(song);
+        song = new Song(R.drawable.queen, "It's A Hard Life", "Queen", "Greatest Hits");
+        songArray.add(song);
+        song = new Song(R.drawable.queen, "Killer Queen", "Queen", "Greatest Hits");
         songArray.add(song);
 
         // Get the ListView by Id and instantiate the adapter with
@@ -90,8 +135,8 @@ public class ControlMusicFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Song selectedSong = (Song) songArray.get(position);
-//                ((CoolerActivity)getActivity()).sendMessage(selectedSong.getTitle());
-                ((CoolerActivity)getActivity()).sendMessage("B" + "/r/n");
+                ((CoolerActivity) getActivity()).sendMessage(selectedSong.getTitle());
+//                ((CoolerActivity)getActivity()).sendMessage("B" + "/r/n");
             }
         });
 
